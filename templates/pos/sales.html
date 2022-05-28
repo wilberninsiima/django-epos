@@ -1,0 +1,36 @@
+{% extends "base.html" %} {% load humanize crispy_forms_tags %} {% block content %}
+<div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+    <div class="mdc-card py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">Sales List</h4>
+        </div>
+    </div>
+</div>
+<div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+    <div class="mdc-card">
+        <div>
+            {% if filters%}
+                <button class="btn btn-outline-primary dropdown-toggle mdc-menu-button" data-toggle="dropdown"
+                    aria-expanded="false">Filter search
+                    <i class="fa fa-filter"></i>
+                </button>
+                <ul class="dropdown-menu- mdc-menu mdc-menu-surface always-open" style="margin-right: 20px;">
+                    <form method="GET" hx--get="" hx-target="#list-section">
+                        <div class="row m-1">
+                            {%for field in filters.form%}
+                            <div class="col-md-3">{{field|as_crispy_field}}</div>
+                            {%endfor%}
+                            <div class="col-md-3"><br />
+                                <button class="btn btn-success"><i class="fa fa-filter"></i> Filter</button>
+                            </div>
+                        </div>
+                    </form>
+                </ul>
+            {%endif%}
+        </div>
+        <div class="table-responsive" id="list-section" hx-get="{%url 'sales'%}?htmx=1" hx-trigger="listChanged from:body">
+            {%include 'pos/partials/sales-list.html'%}
+        </div>
+    </div>
+</div>
+{% endblock content %}

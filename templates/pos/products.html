@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block content %}
+<div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+    <div class="mdc-card py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">Product List</h4>
+            <div class="text-start">
+                {%if 'pos.add_product' in perms%}
+                <button class="btn btn-primary bg-gradient btn-sm rounded-0" hx-get="{%url 'products'%}?action=get-form" hx-target="#modal-dialog"><i class="mdi mdi-plus"></i><span> Add New</span></button>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+    <div class="mdc-card">
+        <div class="table-responsive" hx-get="{%url 'products'%}?htmx=1" hx-trigger="listChanged from:body">
+            {%include 'pos/partials/products-list.html'%}
+        </div>
+    </div>
+</div>
+{% endblock content %}

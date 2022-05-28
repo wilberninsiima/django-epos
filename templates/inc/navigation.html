@@ -1,0 +1,78 @@
+{% load static %}
+<!-- partial:partials/_sidebar.html -->
+{% url 'pos' as pos_url %}
+<aside class="mdc-drawer mdc-drawer--dismissible bg-dark bg-gradient {%ifnotequal request.get_full_path pos_url %} mdc-drawer--open{%endifnotequal%}">
+    <div class="mdc-drawer__header border-bottom border-light">
+        <a href="{% url 'home' %}" class="brand-logo">
+            <h3 class="text-center text-light">{{APP_NAME}}</h3>
+        </a>
+    </div>
+    <div class="mdc-drawer__content">
+        <div class="mdc-list-group">
+            <nav class="mdc-list mdc-drawer-menu">
+                {% url 'home' as home_url %}
+                {% url 'user-roles' as userroles_url %}
+                {% url 'users' as users_url %}
+                <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link {%ifequal request.get_full_path home_url %} active {%endifequal%}"" href="
+                        {% url 'home' %}">
+                        <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                            aria-hidden="true">home</i> Home
+                    </a>
+                </div>
+                {%if request.user.is_superuser%}
+                <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link {%ifequal request.get_full_path userroles_url %} active {%endifequal%}"
+                        href="{% url 'user-roles' %}">
+                        <i class="mdc-list-item__start-detail mdc-drawer-item-icon fa fa-user-secret"
+                            aria-hidden="true"></i> User Roles
+                    </a>
+                </div>
+                {%endif%}
+                {%if request.user.is_superuser%}
+                <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link {%ifequal request.get_full_path users_url %} active {%endifequal%}"
+                        href="{% url 'users' %}">
+                        <i class="mdc-list-item__start-detail mdc-drawer-item-icon fa fa-user" aria-hidden="true"></i>
+                        Users
+                    </a>
+                </div>
+                {%endif%}
+                {%if 'pos.view_category' in perms%}
+                <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="{% url 'categories' %}">
+                        <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                            aria-hidden="true">list</i> Categories
+                    </a>
+                </div>
+                {%endif%}
+                {%if 'pos.view_product' in perms%}
+                <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="{% url 'products' %}">
+                        <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                            aria-hidden="true">label</i> Product List
+                    </a>
+                </div>
+                {%endif%}
+                {%if 'pos.add_sale' in perms%}
+                <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link {%ifequal request.get_full_path pos_url %} active {%endifequal%}"
+                        href="{% url 'pos' %}">
+                        <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                            aria-hidden="true">payment</i> POS
+                    </a>
+                </div>
+                {%endif%}
+                {%if 'pos.view_sale' in perms%}
+                <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="{% url 'sales' %}">
+                        <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                            aria-hidden="true">receipt</i> Sales
+                    </a>
+                </div>
+                {%endif%}
+            </nav>
+        </div>
+    </div>
+</aside>
+<!-- partial -->

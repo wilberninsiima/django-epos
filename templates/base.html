@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> {% if page_title %}
+    <title>{{ page_title }} | {{APP_NAME}}</title>
+    {% else %}
+    <title>{{COMPANY_NAME}}</title>
+    {% endif %}
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="{% static 'assets/material-admin/vendors/mdi/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/material-admin/vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/lib/font-awesome/css/font-awesome.min.css'%}" />
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="{% static 'assets/material-admin/vendors/flag-icon-css/css/flag-icon.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/material-admin/vendors/jvectormap/jquery-jvectormap.css' %}">
+    <!-- End plugin css for this page -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{% static 'assets/material-admin/css/demo/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/lib/select2/dist/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="{{APP_FAVICON}}" />
+    <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}">
+    </script>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/bootstrap/js/popper.min.js' %}"></script>
+</head>
+
+<body>
+    <script src="{% static 'assets/material-admin/js/preloader.js' %}"></script>
+    <div class="body-wrapper">
+        <!-- Aside -->
+        {% block navigation %} {% include "inc/navigation.html" %} {% endblock navigation %}
+        <!-- Aside -->
+        <div class="main-wrapper mdc-drawer-app-content">
+            <!-- Top Navigation -->
+            {% block TopNavigation %} {% include "inc/topNavigation.html" %} {% endblock TopNavigation %}
+            <!-- Top Navigation -->
+
+            <div class="page-wrapper mdc-toolbar-fixed-adjust">
+                <main class="content-wrapper">
+                    <!-- Message -->
+                    {% if messages %}
+                    <div class="mdc-layout-grid py-1">
+                        <div class="mdc-layout-grid__inner">
+                            {% for message in messages %}
+                            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                                <div class="alert alert-{{message.tags}} w-100 rounded-0 mb-0">
+                                    <div class="d-flex w-100">
+                                        <div class="col-auto flex-shrink-1 flex-grow-1">{{ message }}</div>
+                                        <div class="col-auto text-center">
+                                            <button class="btn-close btn-sm text-sm" type="button"
+                                                onclick="$(this).closest('.alert').remove()"></button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <!-- Message -->
+                    <div class="mdc-layout-grid">
+                        <div class="mdc-layout-grid__inner">
+                            {% block content %} {% endblock content %}
+                        </div>
+                    </div>
+                </main>
+                <!-- partial:partials/_footer.html -->
+                <footer>
+                    <div class="mdc-layout-grid">
+                        <div class="mdc-layout-grid__inner">
+                            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                                <span class="text-center text-sm-left d-block d-sm-inline-block tx-14">Copyright ©
+                                    {{APP_NAME}} {% now 'Y' %}</span>
+                            </div>
+                            <div
+                                class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop d-flex justify-content-end">
+                                <span
+                                    class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center tx-14">{{COMPANY_DESCRIPTION}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- partial -->
+            </div>
+        </div>
+    </div>
+    {% block ScriptBlock %} {% endblock ScriptBlock %}
+    <div class="modal fade" id="modal" role='dialog'>
+        <div class="modal-dialog modal-md modal-dialog-centered" id="modal-dialog" hx-target="this" role="document">
+        </div>
+    </div>
+    <!-- Load htmx JS -->
+    <script src="{% static 'assets/js/htmx.min.js'%}"></script>
+    <!-- Plugin js for this page-->
+    <script src="{% static 'assets/lib/chart.js/Chart.min.js'%}"></script>
+    <!-- End custom js for this page-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/lib/datatables.net/datatables.min.css'%}" />
+
+    <script src="{% static 'assets/lib/datatables.net/pdfmake.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'assets/lib/datatables.net/vfs_fonts.js'%}"></script>
+    <script type="text/javascript" src="{% static 'assets/lib/datatables.net/datatables.min.js'%}"></script>
+    <script>
+        function rerenderTable() {
+            var table = $('[data-toggle="table"]').DataTable({
+                dom: "<'row'<'col-sm-2 text-center'l><'col-sm-6'B><'col-sm-4'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-4'i><'col-sm-4 text-center'l><'col-sm-4'p>>",
+                "bDestroy": true,
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
+                ],
+                "aLengthMenu": [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, 'All']
+                ],
+                "iDisplayLength": 25,
+            });
+
+            table.buttons().container().appendTo($('.col-sm-6:eq(0)', table.table().container()));
+        }
+        rerenderTable();
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+
+        // Set Cross site script token for all AJAX requests
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": '{{csrf_token}}' }
+        });
+
+        // var modal = UIkit.modal("#modal", { bgclose: false });
+        var modal = new bootstrap.Modal(document.getElementById("modal"));
+
+        htmx.on('htmx:beforeSwap', (e) => {
+            if (e.detail.target.id === 'modal-dialog' && !e.detail.xhr.response) {
+                modal.hide();
+            }
+            start_loader();
+        });
+
+        htmx.on('htmx:afterSwap', (e) => {
+            if (e.detail.target.id === 'modal-dialog') {
+                modal.show();
+            }
+            end_loader();
+            rerenderTable();
+        });
+        htmx.on('hidden.bs.modal', (e) => {
+            document.getElementById('modal-dialog').innerHTML = '';
+        });
+        function toggleCheckAll(formname, checktoggle) {
+            var checkboxes = new Array();
+            checkboxes = document[formname].getElementsByTagName('input');
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].type === 'checkbox') {
+                    checkboxes[i].checked = checktoggle;
+                }
+            }
+        }
+        window.start_loader = function () {
+            $('body').removeClass('loaded')
+        }
+        window.end_loader = function () {
+            $('body').addClass('loaded')
+        }
+        window.uni_modal = function ($title = '', $url = '', $size = "") {
+            start_loader()
+            $.ajax({
+                url: $url,
+                error: err => {
+                    console.log()
+                    alert("An error occured")
+                },
+                success: function (resp) {
+                    if (resp) {
+                        $('#modal .modal-title').html($title)
+                        $('#modal .modal-dialog').html(resp)
+                        if ($size != '') {
+                            $('#modal .modal-dialog').addClass($size + '  modal-dialog-centered')
+                        } else {
+                            $('#modal .modal-dialog').removeAttr("class").addClass("modal-dialog modal-md modal-dialog-centered")
+                        }
+                        $('#modal').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            focus: true
+                        })
+                        $('#modal').modal('show')
+                        end_loader()
+                    }
+                }
+            })
+        }
+    </script>
+
+    <script src="{% static 'assets/material-admin/vendors/js/vendor.bundle.base.js' %}"></script>
+    <script src="{% static 'assets/material-admin/js/material.js' %}"></script>
+    <script src="{% static 'assets/material-admin/js/misc.js' %}"></script>
+    <script src="{% static 'assets/material-admin/js/dashboard.js' %}"></script>
+    <script src="{% static 'assets/lib/select2/dist/js/select2.full.js' %}"></script>
+</body>
+
+</html>

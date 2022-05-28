@@ -1,0 +1,71 @@
+{% load static %}
+<!-- partial:partials/_navbar.html -->
+<header class="mdc-top-app-bar border-bottom shadow">
+    <div class="mdc-top-app-bar__row">
+        <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <button
+                class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button sidebar-toggler">menu</button>
+        </div>
+        <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end mdc-top-app-bar__section-right">
+            {%if TOM_MENU_SHORTCUTS%}
+            <div class="menu-button-container d-none d-md-block">
+                <button class="mdc-button mdc-menu-button">
+                    <i class="mdi mdi-plus-circle"></i>
+                </button>
+                <div class="mdc-menu mdc-menu-surface" tabindex="-1">
+                    <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                        {%for key,component in TOP_MENU_SHORTCUTS.items%}
+                        <li class="mdc-list-item" role="menuitem">
+                            <div {%if component.hx_url%} hx-get="{{component.hx_url}}" hx-target="#modal-dialog" {%endif%} class="item-content d-flex align-items-start flex-column justify-content-center">
+                                <h6 class="item-subject font-weight-normal">{{component.title}}</h6>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </ul>
+                </div>
+            </div>
+            <div class="divider d-none d-md-block"></div>
+            {%endif%}
+            <div class="menu-button-container menu-profile d-none d-md-block">
+                <button class="mdc-button mdc-menu-button">
+                    <span class="d-flex align-items-center">
+                        <span class="figure">
+                            <img src="{% static 'assets/material-admin/images/faces/ava.jpg' %}" alt="user"
+                                class="user">
+                        </span>
+                        <span class="user-name">{{ user.first_name }}</span>
+                    </span>
+                </button>
+                <div class="mdc-menu mdc-menu-surface" tabindex="-1">
+                    <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                        {%if request.user.is_staff%}
+                        <li role="menuitem">
+                            <a target="_" class="text-dark mdc-list-item" href="{% url 'redirect-admin' %}">
+                                <div class="item-thumbnail item-thumbnail-icon-only">
+                                    <i class="mdi mdi-settings-outline text-dark"></i>
+                                </div>
+                                <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="item-subject font-weight-normal">
+                                        Admin
+                                    </h6>
+                                </div>
+                            </a>
+                        </li>
+                        {%endif%}
+                        <li role="menuitem">
+                            <a class="text-dark mdc-list-item" href="{% url 'account_logout' %}">
+                                <div class="item-thumbnail item-thumbnail-icon-only">
+                                    <i class="mdi mdi-logout text-dark"></i>
+                                </div>
+                                <div class="item-content d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="item-subject font-weight-normal">Logout</h6>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- partial -->

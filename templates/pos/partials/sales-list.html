@@ -1,0 +1,38 @@
+{% load humanize %}
+<table class="table table-striped table-bordered" data-toggle="table">
+    <thead>
+        <tr>
+            <th class="text-center py-1">#</th>
+            <th class="text-center py-1">DateTime</th>
+            <th class="text-center py-1">Trans. Code</th>
+            <th class="text-center py-1">Total</th>
+            <th class="text-center py-1">Tax Inclusive</th>
+            <th class="text-center py-1">Items</th>
+            <th>Cashier</th>
+            <th class="text-center py-1">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sale in list %}
+        <tr>
+            <td class="px-2 py-1 text-center">{{ sale.id }}</td>
+            <td class="px-2 py-1 text-start">{{ sale.date_added }}</td>
+            <td class="px-2 py-1 text-start">{{ sale.code }}</td>
+            <td class="px-2 py-1 text-end">{{ sale.grand_total|intcomma }}</td>
+            <td class="px-2 py-1 text-end">({{ sale.tax }}%) {{ sale.tax_amount|intcomma:2 }}</td>
+            <td class="px-2 py-1 text-center">{{ sale.total_items|intcomma }}</td>
+            <td class="px-2 py-1 text-start">{{ sale.created_by.name }}</td>
+            <td class="px-2 py-1 text-center">
+                <button hx-get="{%url 'receipt-modal'%}?id={{sale.id}}" hx-target="#modal-dialog" class="mdc-button mdc-button--raised p-1 icon-button filled-button--light mdc-ripple-upgraded" type="button" title="View Receipt">
+                    <i class="material-icons mdc-button__icon">receipt</i>
+                </button>
+                {%if 'pos.delete_sale' in perms%}
+                <button hx-delete="{%url 'sale' sale.id%}" hx-confirm="You are deleting a sale" class="mdc-button mdc-button--raised p-1 icon-button filled-button--danger mdc-ripple-upgraded" type="button" title="Delete">
+                    <i class="material-icons mdc-button__icon">deleteoutline</i>
+                </button>
+                {%endif%}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

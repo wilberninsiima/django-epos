@@ -1,0 +1,18 @@
+{% load static i18n crispy_forms_tags %}
+
+<div class="modal-content rounded-0">
+    {%if form%}
+    <form hx-post="{%if category%}{{category.get_url}}{%else%}{%url 'categories'%}{%endif%}">
+        <div class="modal-header">
+            <h5 class="modal-title">{%if category%}Edit {{category}}{%else%}Add Category{%endif%}</h5>
+        </div>
+        <div class="modal-body">
+            {%crispy form%}
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn  btn-sm btn-flat btn-primary rounded-0">Save</button>
+            <button type="button" class="btn btn-sm btn-flat btn-secondary rounded-0" data-bs-dismiss="modal">Cancel</button>
+        </div>
+    </form>
+    {%endif%}
+</div>

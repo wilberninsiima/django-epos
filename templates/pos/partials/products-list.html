@@ -1,0 +1,47 @@
+<table class="table table-striped table-bordered" data-toggle="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Category</th>
+            <th>Product</th>
+            <th>Unit Measure</th>
+            <th>Price</th>
+            <th>Track Stock</th>
+            <th>In Stock</th>
+            <th>Min. Stock Level</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in list %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.code }} - {{ product.name }}</td>
+            <td>{{ product.unit_measure }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.track_stock }}</td>
+            <td>{{ product.in_stock }}</td>
+            <td>{{ product.low_stock_level }}</td>
+            <td>{{ product.description }}</td>
+            <td>
+                <span class="badge bg-{% if product.status == 1 %}primary{% else %}secondary{% endif %} rounded-pill px-3">{{product.get_status_display}}</span> 
+            </td>
+            <td>
+                {%if 'pos.change_product' in perms%}
+                <button hx-get="{{product.get_url}}?action=get-form" hx-target="#modal-dialog" class="mdc-button mdc-button--raised p-1 icon-button filled-button--light mdc-ripple-upgraded" type="button" title="Edit">
+                    <i class="material-icons mdc-button__icon">edit</i>
+                </button>
+                {%endif%}
+                {%if 'pos.delete_product' in perms%}
+                <button hx-delete="{{product.get_url}}" hx-confirm="Do you really want to delete this product?" class="mdc-button mdc-button--raised p-1 icon-button filled-button--danger mdc-ripple-upgraded" type="button" title="Delete">
+                    <i class="material-icons mdc-button__icon">deleteoutline</i>
+                </button>
+                {%endif%}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
