@@ -2,7 +2,8 @@
 
 
 Requirements:
-  Python3
+  
+   Python3
  
  
 Installation
@@ -10,7 +11,7 @@ Installation
   Switch to the installed Virtual environment
   Install the required dependencies from the requirements.txt
   Run the server
-  
+
   And you are good to use the system
   
   
