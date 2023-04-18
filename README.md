@@ -1,9 +1,7 @@
 
 # Supermarket ePOS (Point of Sales System) - Django
 
-
-
-
+Simple to use Point of Sales System, developed in Django framework
 ## Technology Used
 
 **Fontend:** HTML, CSS, JavaScript(jQuery), Boostrap, DataTables, HTMX
@@ -15,19 +13,21 @@
 
 - Login Page with User authentication
 - User Access control and Management
+  - User Account Registration
+  - Password forgot, and reset
 - Dashboard Page with statistics and graphs
 - DataTables with print, copy, to CSV, and to PDF buttons
 - Product Categories Management (CRUD)
 - Point of Sale (POS)
-- Search and add product to list
-- Graphically (GUI) picking items from list
-- Calculate automatically the subtotal, grand total, tax amount
-- Update Item Quantity and Recalculate Total
-- Sale validation paid amount and at least one product
+  - Search and add product to list
+  - Graphically (GUI) picking items from list
+  - Calculate automatically the subtotal, grand total, tax amount
+  - Update Item Quantity and Recalculate Total
+  - Sale validation paid amount and at least one product
 - Sales Management
-- List all Sales
-- View Sale details
-- Print Sales Receipt
+  - List all Sales
+  - View Sale details
+  - Print Sales Receipt
 
 
 
